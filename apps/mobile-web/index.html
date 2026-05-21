@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#07101f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FieldTech" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Field Tech Agent</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <div id="app">
+      <!-- ── Top bar ── -->
+      <header class="app-header no-print">
+        <div class="header-brand">
+          <div class="header-logo">⚙</div>
+          <span class="header-title">FieldTech</span>
+          <span class="header-badge">AI</span>
+        </div>
+        <div class="header-actions">
+          <button id="contrast-btn" class="contrast-btn" type="button" title="Toggle high-contrast mode" aria-label="Toggle high-contrast mode" aria-pressed="false">☀</button>
+          <button id="header-new-btn" class="header-new-btn hidden" type="button">+ New Report</button>
+        </div>
+      </header>
+
+      <!-- Print header -->
+      <header class="print-header">
+        <strong>FieldTech — Field Service Report</strong>
+        <span id="print-timestamp"></span>
+      </header>
+
+      <main>
+        <form id="report-form" novalidate>
+
+          <!-- Photos -->
+          <div class="card">
+            <div class="card-label">Photos</div>
+            <div id="photo-slots" class="photo-slots">
+              <!-- Slot 1 — primary -->
+              <div class="photo-slot photo-slot--primary" data-slot="1">
+                <img class="slot-preview hidden" alt="Photo 1" />
+                <label class="slot-placeholder photo-area--pulse">
+                  <span class="slot-icon">📷</span>
+                  <span class="slot-hint">Tap to capture</span>
+                  <span class="slot-sub">Compressed automatically</span>
+                  <input type="file" class="slot-input visually-hidden" accept="image/*" capture="environment" />
+                </label>
+                <button type="button" class="slot-retake hidden" aria-label="Remove photo 1">✕</button>
+              </div>
+              <!-- Slot 2 -->
+              <div class="photo-slot photo-slot--secondary hidden" data-slot="2">
+                <img class="slot-preview hidden" alt="Photo 2" />
+                <label class="slot-placeholder">
+                  <span class="slot-icon">+</span>
+                  <span class="slot-hint">Add photo</span>
+                  <input type="file" class="slot-input visually-hidden" accept="image/*" capture="environment" />
+                </label>
+                <button type="button" class="slot-retake hidden" aria-label="Remove photo 2">✕</button>
+              </div>
+              <!-- Slot 3 -->
+              <div class="photo-slot photo-slot--secondary hidden" data-slot="3">
+                <img class="slot-preview hidden" alt="Photo 3" />
+                <label class="slot-placeholder">
+                  <span class="slot-icon">+</span>
+                  <span class="slot-hint">Add photo</span>
+                  <input type="file" class="slot-input visually-hidden" accept="image/*" capture="environment" />
+                </label>
+                <button type="button" class="slot-retake hidden" aria-label="Remove photo 3">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job Context (collapsible) -->
+          <div class="card card--collapsible">
+            <button type="button" class="card-label card-label--toggle" id="job-toggle" aria-expanded="false" aria-controls="job-fields-body">
+              <span>Job Context</span>
+              <span class="label-optional">optional</span>
+              <span class="toggle-arrow" aria-hidden="true">›</span>
+            </button>
+            <div id="job-fields-body" class="job-fields collapsed">
+              <div class="field-group">
+                <label class="field-label" for="job-id">Job ID</label>
+                <input type="text" id="job-id" class="field-input" placeholder="e.g. JOB-2041" autocomplete="off" />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="site">Site / Location</label>
+                <input type="text" id="site" class="field-input" placeholder="e.g. 4th Floor Server Room" autocomplete="off" />
+              </div>
+              <div class="field-group">
+                <label class="field-label" for="asset">Asset / Equipment</label>
+                <input type="text" id="asset" class="field-input" placeholder="e.g. Carrier RTU-3" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Field Note -->
+          <div class="card">
+            <div class="card-label">
+              Field Note
+              <span class="label-required">required</span>
+            </div>
+            <div class="field-group symptom-group">
+              <div class="symptom-label-row">
+                <label class="field-label field-label--section" for="symptom">Observed Symptom</label>
+                <span class="label-optional">optional</span>
+              </div>
+              <select id="symptom" class="field-select">
+                <option value="">— Select a symptom —</option>
+                <option>Running continuously</option>
+                <option>Slow to drain</option>
+                <option>No hot water</option>
+                <option>Making noise</option>
+                <option>Leaking or dripping</option>
+                <option>Not flushing fully</option>
+                <option>Won't turn on or off</option>
+                <option>Error code or warning light</option>
+                <option>Visible damage</option>
+                <option>Routine inspection</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="note-row">
+              <textarea id="note" rows="4" placeholder="Describe what you're observing — location, symptoms, anything unusual…"></textarea>
+              <button type="button" id="mic-btn" class="mic-btn" title="Tap to dictate" aria-label="Start voice dictation">🎙</button>
+            </div>
+            <div id="record-indicator" class="record-indicator hidden">
+              <span class="record-dot"></span> Listening…
+            </div>
+            <div class="char-count" id="char-count">0 characters</div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="submit-btn" disabled>
+            <span class="submit-icon">⚡</span> Analyze with AI
+          </button>
+        </form>
+
+        <!-- Previous reports -->
+        <section id="history-panel" class="history-panel hidden no-print">
+          <div class="history-header">
+            <span class="section-label">Previous Reports</span>
+            <button id="clear-history-btn" class="clear-history-btn" type="button">Clear all</button>
+          </div>
+          <div id="history-list" class="history-list"></div>
+        </section>
+
+        <!-- Result panel -->
+        <section id="result-panel" class="result-panel hidden">
+
+          <!-- Risk + Confidence bar -->
+          <div class="result-risk-bar" id="result-risk-bar">
+            <div class="risk-bar-left">
+              <span class="risk-label">Risk Level</span>
+              <span id="severity-badge" class="severity-badge"></span>
+            </div>
+            <div class="risk-bar-right">
+              <span class="risk-label">Confidence</span>
+              <div class="confidence-wrap">
+                <div class="confidence-bar-bg">
+                  <div class="confidence-bar-fill" id="confidence-bar-fill"></div>
+                </div>
+                <span class="confidence-pct" id="confidence-pct">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Job context pills -->
+          <div id="result-job-context" class="result-job-context hidden"></div>
+
+          <!-- Subtitle (category + timestamp) -->
+          <div id="result-subtitle" class="result-subtitle"></div>
+
+          <!-- Dynamic sections -->
+          <div id="result-content"></div>
+
+          <!-- Actions -->
+          <div class="result-actions no-print">
+            <button id="customer-report-btn" class="action-btn action-btn--customer" type="button">Customer Report</button>
+            <button id="copy-json-btn" class="action-btn action-btn--system" type="button" title="Copies structured JSON for integrations.">
+              <span class="action-btn-label">Export for System</span>
+              <span class="action-btn-sub">For integrations</span>
+            </button>
+            <button id="copy-summary-btn" class="action-btn" type="button">Copy Summary</button>
+            <button id="export-pdf-btn" class="action-btn action-btn--accent" type="button">Export PDF</button>
+            <button id="share-btn" class="action-btn action-btn--wide" type="button">Share Report</button>
+          </div>
+
+          <button id="new-report-btn" class="new-report-btn no-print" type="button">New Report</button>
+        </section>
+
+        <!-- Loading overlay -->
+        <div id="loading" class="loading hidden">
+          <div class="loading-inner">
+            <div class="spinner"></div>
+            <p class="loading-title">Analyzing…</p>
+            <p class="loading-sub">Processing photo and field note with AI</p>
+          </div>
+        </div>
+      </main>
+
+      <!-- Customer Report modal -->
+      <div id="customer-report-modal" class="customer-modal hidden" aria-modal="true" role="dialog">
+        <div class="customer-modal-card">
+          <div class="customer-modal-header">
+            <span class="customer-modal-title">Customer Report</span>
+            <button id="customer-modal-close" class="customer-modal-close" type="button" aria-label="Close">✕</button>
+          </div>
+          <div class="customer-modal-body">
+            <div class="customer-modal-loading hidden">
+              <div class="spinner"></div>
+              <p class="loading-sub">Generating customer report…</p>
+            </div>
+            <p id="customer-modal-text" class="customer-report-text"></p>
+          </div>
+          <div class="customer-modal-actions">
+            <button id="customer-modal-share" class="action-btn action-btn--accent" type="button">Share</button>
+            <button id="customer-modal-copy" class="action-btn" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
