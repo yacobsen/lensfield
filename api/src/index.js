@@ -18,7 +18,16 @@ if (MODE === "REAL") {
 }
 
 const upload = multer({ storage: multer.memoryStorage() });
-app.use(cors());
+
+const allowedOrigins = process.env.ALLOWED_ORIGIN
+  ? process.env.ALLOWED_ORIGIN.split(",")
+  : ["http://localhost:5173", "http://127.0.0.1:5173"];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+}));
 app.use(express.json());
 
 // ── Health ────────────────────────────────────────────────────
