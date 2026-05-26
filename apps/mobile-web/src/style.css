@@ -1591,3 +1591,121 @@ body.high-contrast .field-select option { background: #e4e7ec; color: #0a0f1a; }
   letter-spacing: 0.09em;
   color: var(--text-muted);
 }
+
+/* ══ UI Polish additions ══════════════════════════════════════ */
+
+/* 1. Form page spacing */
+main { gap: 20px; }
+.card { padding: 20px; }
+
+/* 2. More-options menu */
+.result-actions { grid-template-columns: 1fr 1fr; align-items: center; }
+.more-actions-wrap { position: relative; }
+.action-btn--more {
+  width: 44px;
+  min-height: 44px;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  padding: 0;
+}
+.more-actions-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  overflow: hidden;
+  z-index: 50;
+}
+.more-menu-item {
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 13px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  min-height: 48px;
+}
+.more-menu-item:last-child { border-bottom: none; }
+.more-menu-item:hover { background: var(--surface-2); color: var(--text); }
+.more-actions-menu.hidden { display: none !important; }
+
+/* 3. Confidence bar color by risk level (overrides data-level approach) */
+.confidence-bar-fill[data-risk="low"]      { background: var(--risk-low); }
+.confidence-bar-fill[data-risk="medium"]   { background: var(--risk-med); }
+.confidence-bar-fill[data-risk="high"]     { background: var(--risk-high); }
+.confidence-bar-fill[data-risk="critical"] { background: var(--danger); animation: mic-pulse 1.4s ease-in-out infinite; }
+/* nullify old percentage-based data-level coloring */
+.confidence-bar-fill[data-level="high"],
+.confidence-bar-fill[data-level="mid"],
+.confidence-bar-fill[data-level="low"] { background: var(--accent); }
+
+/* 4. Collapsible section toggle (While You're On Site / Before You Leave) */
+.rs-section-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  min-height: 32px;
+  color: inherit;
+}
+.rs-toggle-chevron {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+  line-height: 1;
+  margin-left: auto;
+  padding-left: 8px;
+  flex-shrink: 0;
+}
+.rs-section-toggle[aria-expanded="true"] .rs-toggle-chevron { transform: rotate(90deg); }
+.rs-collapsible-body { margin-top: 10px; }
+
+/* 6. Job Context — "Add details" label replaces chevron */
+.toggle-add-details {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+.card-label--toggle:hover .toggle-add-details,
+.card-label--toggle[aria-expanded="true"] .toggle-add-details { color: var(--accent); }
+
+/* 7. Submit button — 60px, brighter blue, glow */
+.submit-btn {
+  min-height: 60px !important;
+  background: #1d6ef5 !important;
+  box-shadow: 0 2px 16px rgba(29, 110, 245, 0.45) !important;
+}
+.submit-btn:hover:not(:disabled) {
+  background: #1558d6 !important;
+  box-shadow: 0 4px 24px rgba(29, 110, 245, 0.6) !important;
+}
+.submit-btn:focus-visible:not(:disabled) {
+  outline: 2px solid rgba(29, 110, 245, 0.7);
+  outline-offset: 2px;
+  box-shadow: 0 4px 24px rgba(29, 110, 245, 0.6) !important;
+}
+
+/* 8. Hide result subtitle on screen (still prints via @media print block above) */
+@media screen {
+  .result-subtitle { display: none; }
+}

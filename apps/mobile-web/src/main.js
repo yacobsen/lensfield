@@ -372,8 +372,7 @@ function renderResult(data, shouldSave = false) {
   if (confidenceVal != null) {
     const pct = Math.round(confidenceVal * 100);
     confidenceBarFill.style.width = `${pct}%`;
-    confidenceBarFill.dataset.level =
-      pct >= 85 ? "high" : pct >= 65 ? "mid" : "low";
+    confidenceBarFill.dataset.risk = riskClass;
     confidencePct.textContent = `${pct}%`;
   } else {
     confidenceBarFill.style.width = "0%";
@@ -485,17 +484,23 @@ function renderResult(data, shouldSave = false) {
     </div>` : ""}
 
     ${upsell.length > 0 ? `
-    <div class="result-section">
-      <span class="rs-label">While You're On Site</span>
-      <ul class="rs-list rs-list--upsell">
+    <div class="result-section result-section--collapsible">
+      <button type="button" class="rs-section-toggle" aria-expanded="false">
+        <span class="rs-label">While You're On Site (${upsell.length})</span>
+        <span class="rs-toggle-chevron" aria-hidden="true">›</span>
+      </button>
+      <ul class="rs-list rs-list--upsell rs-collapsible-body hidden">
         ${upsell.map((u) => `<li>${escHtml(u)}</li>`).join("")}
       </ul>
     </div>` : ""}
 
     ${checklist.length > 0 ? `
-    <div class="result-section">
-      <span class="rs-label">Before You Leave</span>
-      <ul class="rs-list rs-list--checklist">
+    <div class="result-section result-section--collapsible">
+      <button type="button" class="rs-section-toggle" aria-expanded="false">
+        <span class="rs-label">Before You Leave (${checklist.length})</span>
+        <span class="rs-toggle-chevron" aria-hidden="true">›</span>
+      </button>
+      <ul class="rs-list rs-list--checklist rs-collapsible-body hidden">
         ${checklist.map((item, i) => `
         <li class="checklist-item" data-index="${i}">
           <span class="checklist-box"></span>
@@ -540,6 +545,15 @@ function renderResult(data, shouldSave = false) {
   // Wire up checklist interactivity
   resultContent.querySelectorAll(".checklist-item").forEach((item) => {
     item.addEventListener("click", () => item.classList.toggle("checklist-item--checked"));
+  });
+
+  // Wire up collapsible section toggles (While You're On Site / Before You Leave)
+  resultContent.querySelectorAll(".rs-section-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      btn.nextElementSibling.classList.toggle("hidden", expanded);
+    });
   });
 
   // Wire up vision section toggle
@@ -713,6 +727,22 @@ copySummaryBtn.addEventListener("click", async () => {
 
 // ── Export PDF ────────────────────────────────────────────────
 exportPdfBtn.addEventListener("click", () => window.print());
+
+// ── More-options menu ─────────────────────────────────────────
+const moreActionsBtn  = document.getElementById("more-actions-btn");
+const moreActionsMenu = document.getElementById("more-actions-menu");
+
+moreActionsBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const open = !moreActionsMenu.classList.contains("hidden");
+  moreActionsMenu.classList.toggle("hidden", open);
+  moreActionsBtn.setAttribute("aria-expanded", String(!open));
+});
+
+document.addEventListener("click", () => {
+  moreActionsMenu.classList.add("hidden");
+  moreActionsBtn.setAttribute("aria-expanded", "false");
+});
 
 // ── Toast ─────────────────────────────────────────────────────
 let toastTimer = null;
