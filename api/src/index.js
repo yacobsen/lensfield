@@ -455,13 +455,11 @@ app.post(
 );
 
 // ── POST /customer-report ─────────────────────────────────────
-const CUSTOMER_REPORT_SYSTEM = `You are writing a friendly, plain-English service report for a homeowner or building manager. Write exactly 3 short paragraphs: (1) what the technician found, (2) what was done or recommended, (3) next steps for the customer. Use a reassuring, professional tone. No technical jargon — if you must use a technical term, explain it in plain English. End the report with the sign-off: "Your Service Team". Return only the report text, no JSON, no headers, no bullet points.`;
+const CUSTOMER_REPORT_SYSTEM = `You are writing a friendly plain-English service report for a homeowner. Write exactly 2 short paragraphs. First paragraph: what the technician found when they arrived, in plain English. Second paragraph: what was actually done to resolve it — use the resolution_note field if provided, otherwise describe what was recommended. End with one sentence about next steps if relevant. Sign off with Your Service Team. Maximum 120 words total. No jargon.`;
 
-const MOCK_CUSTOMER_REPORT = `Thank you for having us out today. Our technician completed a thorough inspection of the reported issue and documented the findings in detail. The condition has been assessed and is well understood — there is no cause for alarm at this time.
+const MOCK_CUSTOMER_REPORT = `Our technician visited today and found the reported issue. The problem was identified and the likely cause is well understood.
 
-Based on what was found, we've outlined the recommended next steps to address the situation properly. Our team has prioritized the actions that will restore normal operation and prevent any recurrence, and we're confident in the path forward.
-
-We'll be in touch to confirm the follow-up appointment and arrange any necessary parts. In the meantime, please don't hesitate to reach out if you notice any changes. We're here to help every step of the way.
+The technician addressed the issue as described and your system is on the path to normal operation. If anything changes or you have questions before your next scheduled visit, please don't hesitate to call us.
 
 Your Service Team`;
 
@@ -472,22 +470,29 @@ app.post("/customer-report", async (req, res) => {
     return res.status(400).json({ error: "Request body must be the analysis JSON." });
   }
 
-  console.log(`[customer-report] mode=${MODE} risk=${analysisData.risk_level}`);
+  const resolutionNote = (typeof analysisData.resolution_note === "string" && analysisData.resolution_note)
+    ? analysisData.resolution_note : null;
+
+  console.log(`[customer-report] mode=${MODE} risk=${analysisData.risk_level} hasResolution=${!!resolutionNote}`);
 
   if (MODE === "MOCK") {
     setTimeout(() => res.json({ customer_report: MOCK_CUSTOMER_REPORT }), 600);
     return;
   }
 
+  const resolutionSection = resolutionNote
+    ? `\n\nResolution Note (what the technician actually did): ${resolutionNote}`
+    : "";
+
   try {
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 600,
+      max_tokens: 300,
       system: CUSTOMER_REPORT_SYSTEM,
       messages: [
         {
           role: "user",
-          content: `Here is the structured field analysis to convert into a customer report:\n\n${JSON.stringify(analysisData, null, 2)}`,
+          content: `Here is the structured field analysis to convert into a customer report:\n\n${JSON.stringify(analysisData, null, 2)}${resolutionSection}`,
         },
       ],
     });

@@ -1709,3 +1709,75 @@ main { gap: 20px; }
 @media screen {
   .result-subtitle { display: none; }
 }
+
+/* ══ UI Polish Round 2 ════════════════════════════════════════ */
+
+/* 1. Form card gap — 16px consistent */
+main { gap: 16px; }
+
+/* 2. ··· button — full width spanning both columns */
+.more-actions-wrap { grid-column: 1 / -1; }
+.action-btn--more  { width: 100%; min-height: 44px; }
+
+/* 4. Submit button — exact specified colors */
+.submit-btn {
+  background: #2563eb !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.4) !important;
+}
+.submit-btn:hover:not(:disabled) {
+  background: #1d4ed8 !important;
+  box-shadow: 0 0 28px rgba(37, 99, 235, 0.55) !important;
+}
+.submit-btn:focus-visible:not(:disabled) {
+  box-shadow: 0 0 28px rgba(37, 99, 235, 0.55) !important;
+}
+
+/* 5. Mic SVG — block display, no baseline gap */
+.mic-btn svg { display: block; flex-shrink: 0; }
+
+/* 6. Customer report modal — light theme */
+.customer-modal-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+.customer-modal-header { border-bottom-color: rgba(0, 0, 0, 0.1); }
+.customer-modal-title  { color: #111827; }
+.customer-modal-close  { color: #6b7280; }
+.customer-modal-close:hover { color: #111827; }
+.customer-report-text  { color: #111827; }
+.customer-modal-actions { border-top-color: rgba(0, 0, 0, 0.1); }
+/* Spinner track on white bg */
+.customer-modal-card .spinner {
+  border-color: rgba(0, 0, 0, 0.1);
+  border-top-color: #2563eb;
+}
+.customer-modal-card .loading-sub { color: #6b7280; }
+/* Action buttons inside light modal */
+.customer-modal-actions .action-btn {
+  color: #374151;
+  background: #f3f4f6;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+.customer-modal-actions .action-btn--accent {
+  background: #2563eb;
+  color: #fff;
+  border-color: transparent;
+}
+.customer-modal-actions .action-btn:hover:not(.action-btn--accent) {
+  background: #e5e7eb;
+  color: #111827;
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* High-contrast mode — modal stays light */
+body.high-contrast .customer-modal-card { background: #ffffff; border-color: rgba(0, 0, 0, 0.2); }
+body.high-contrast .customer-modal-title,
+body.high-contrast .customer-report-text { color: #0a0f1a; }
+body.high-contrast .customer-modal-close { color: #374151; }
+body.high-contrast .customer-modal-close:hover { color: #0a0f1a; }
+body.high-contrast .customer-modal-card .loading-sub { color: #374151; }
+body.high-contrast .customer-modal-actions .action-btn { color: #1e2533; background: #e4e7ec; border-color: rgba(0,0,0,0.2); }
+body.high-contrast .customer-modal-actions .action-btn--accent { background: #1a45cc; color: #fff; border-color: transparent; }
+
+/* ── Resolution Note card (result panel) ─────────────────────── */
+.resolution-note-card { box-shadow: none; }

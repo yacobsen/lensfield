@@ -40,6 +40,9 @@ const exportPdfBtn     = document.getElementById("export-pdf-btn");
 const contrastBtn      = document.getElementById("contrast-btn");
 const toastEl          = document.getElementById("toast");
 const printTimestamp   = document.getElementById("print-timestamp");
+const resolutionNoteEl          = document.getElementById("resolution-note");
+const resolutionMicBtn          = document.getElementById("resolution-mic-btn");
+const resolutionRecordIndicator = document.getElementById("resolution-record-indicator");
 
 // ── State ─────────────────────────────────────────────────────
 let photoFiles  = [null, null, null]; // up to 3 photos (index 0=slot1, 1=slot2, 2=slot3)
@@ -72,7 +75,7 @@ contrastBtn.addEventListener("click", () => {
 });
 
 // ── Image compression ─────────────────────────────────────────
-async function compressImage(file, maxWidth = 1200, quality = 0.85) {
+async function compressImage(file, maxWidth = 900, quality = 0.75) {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -240,6 +243,66 @@ if (SpeechRecognition) {
   micBtn.classList.add("hidden");
 }
 
+// ── Resolution Note voice ─────────────────────────────────────
+let resolutionRecognition = null;
+let isResolutionRecording = false;
+
+if (SpeechRecognition) {
+  resolutionRecognition = new SpeechRecognition();
+  resolutionRecognition.continuous = true;
+  resolutionRecognition.interimResults = true;
+  resolutionRecognition.lang = "en-US";
+
+  let resolutionFinalTranscript = "";
+
+  resolutionRecognition.onstart = () => {
+    isResolutionRecording = true;
+    resolutionMicBtn.classList.add("mic-btn--recording");
+    resolutionRecordIndicator.classList.remove("hidden");
+    resolutionFinalTranscript = resolutionNoteEl.value;
+  };
+
+  resolutionRecognition.onresult = (e) => {
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) {
+        resolutionFinalTranscript += (resolutionFinalTranscript && !resolutionFinalTranscript.endsWith(" ") ? " " : "") + t;
+      } else {
+        interim = t;
+      }
+    }
+    resolutionNoteEl.value = resolutionFinalTranscript + (interim ? ` ${interim}` : "");
+  };
+
+  resolutionRecognition.onend = () => {
+    isResolutionRecording = false;
+    resolutionMicBtn.classList.remove("mic-btn--recording");
+    resolutionRecordIndicator.classList.add("hidden");
+    resolutionNoteEl.value = resolutionFinalTranscript.trim();
+  };
+
+  resolutionRecognition.onerror = (e) => {
+    console.warn("[resolution voice] error:", e.error);
+    isResolutionRecording = false;
+    resolutionMicBtn.classList.remove("mic-btn--recording");
+    resolutionRecordIndicator.classList.add("hidden");
+    if (e.error !== "no-speech" && e.error !== "aborted") {
+      showToast("Voice not available — type your note");
+    }
+  };
+
+  resolutionMicBtn.addEventListener("click", () => {
+    if (isResolutionRecording) {
+      resolutionRecognition.stop();
+    } else {
+      try { resolutionRecognition.start(); } catch { /* already started */ }
+    }
+  });
+} else {
+  resolutionMicBtn.classList.add("hidden");
+}
+
 // ── History ───────────────────────────────────────────────────
 const HISTORY_KEY = "fta_reports";
 const HISTORY_MAX = 25;
@@ -334,6 +397,7 @@ form.addEventListener("submit", async (e) => {
   if (!note) return;
 
   if (isRecording && recognition) recognition.stop();
+  if (isResolutionRecording && resolutionRecognition) resolutionRecognition.stop();
 
   const formData = new FormData();
   formData.append("note", note);
@@ -590,6 +654,7 @@ function resetToForm() {
   siteEl.value  = "";
   assetEl.value = "";
   submitBtn.disabled = true;
+  resolutionNoteEl.value = "";
   resultContent.innerHTML = "";
   headerNewBtn.classList.add("hidden");
   resultPanel.classList.add("hidden");
@@ -610,13 +675,13 @@ function buildShareText(d) {
     jc.asset ? `Asset: ${jc.asset}` : "",
   ].filter(Boolean).join(" | ");
 
-  const lines = [`Field Tech Report — ${ts}`, `Risk: ${d.risk_level} | Category: ${d.category}`];
+  const lines = [`Field Tech Report — ${ts}`, `Risk: ${d.risk_level} | Category: ${(d.category ?? "").toUpperCase()}`];
   if (jobLine) lines.push(jobLine);
   if (d.meta?.symptom) lines.push(`Symptom: ${d.meta.symptom}`);
   lines.push("", `Summary: ${d.summary}`);
   if ((d.possible_causes ?? []).length > 0) {
     lines.push("", "Possible Causes:");
-    d.possible_causes.forEach((c, i) => lines.push(`  ${i + 1}. ${c}`));
+    d.possible_causes.forEach((c) => lines.push(`  • ${c}`));
   }
   if ((d.hazards ?? []).length > 0) {
     lines.push("", "Hazards:");
@@ -670,7 +735,7 @@ customerReportBtn.addEventListener("click", async () => {
     const res = await fetch(`${API_BASE}/customer-report`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currentData),
+      body: JSON.stringify({ ...currentData, resolution_note: resolutionNoteEl.value.trim() || null }),
     });
     if (!res.ok) throw new Error(`${res.status}`);
     const { customer_report } = await res.json();

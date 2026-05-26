@@ -188,6 +188,28 @@
           <!-- Dynamic sections -->
           <div id="result-content"></div>
 
+          <!-- Resolution Note -->
+          <div class="card resolution-note-card no-print" id="resolution-note-card">
+            <div class="card-label">
+              Resolution Note
+              <span class="label-optional">optional</span>
+            </div>
+            <div class="note-row">
+              <textarea id="resolution-note" rows="3" placeholder="What did you do? Describe what was fixed, replaced, or adjusted..."></textarea>
+              <button type="button" id="resolution-mic-btn" class="mic-btn" title="Tap to dictate" aria-label="Start voice dictation for resolution note">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="7" y="1" width="6" height="10" rx="3" fill="currentColor"/>
+                  <path d="M4 9a6 6 0 0012 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+                  <line x1="10" y1="15" x2="10" y2="19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <line x1="7" y1="19" x2="13" y2="19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <div id="resolution-record-indicator" class="record-indicator hidden">
+              <span class="record-dot"></span> Listening…
+            </div>
+          </div>
+
           <!-- Actions -->
           <div class="result-actions no-print">
             <button id="customer-report-btn" class="action-btn action-btn--customer" type="button">
