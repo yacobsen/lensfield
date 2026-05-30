@@ -1594,8 +1594,7 @@ body.high-contrast .field-select option { background: #e4e7ec; color: #0a0f1a; }
 
 /* ══ UI Polish additions ══════════════════════════════════════ */
 
-/* 1. Form page spacing */
-main { gap: 20px; }
+/* 1. Card padding */
 .card { padding: 20px; }
 
 /* 2. More-options menu */
@@ -1712,8 +1711,6 @@ main { gap: 20px; }
 
 /* ══ UI Polish Round 2 ════════════════════════════════════════ */
 
-/* 1. Form card gap — 16px consistent */
-main { gap: 16px; }
 
 /* 2. ··· button — full width spanning both columns */
 .more-actions-wrap { grid-column: 1 / -1; }
@@ -1781,3 +1778,7 @@ body.high-contrast .customer-modal-actions .action-btn--accent { background: #1a
 
 /* ── Resolution Note card (result panel) ─────────────────────── */
 .resolution-note-card { box-shadow: none; }
+
+/* ── Form card spacing (definitive) ─────────────────────────── */
+form#report-form { display: flex; flex-direction: column; gap: 0; }
+form#report-form .card { margin-bottom: 20px; }
