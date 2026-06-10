@@ -1,10 +1,12 @@
 # FieldTech AI
 
-AI-powered field intelligence tool for HVAC, plumbing, and electrical technicians.
+Mobile AI tool for field service technicians — HVAC, plumbing, electrical, and more.
 
-Technicians photograph equipment, add a voice or text note, and get back a structured AI report in seconds — risk level, visual diagnosis, recommended actions, parts list with part numbers, billable notes, and a plain-English customer summary.
+Photograph equipment, add a note, get back a structured report: risk level, visual 
+diagnosis, recommended actions, parts list with part numbers, billable notes, and a 
+customer-ready summary. No app install, works on any phone.
 
-Built for owner-operated field service companies (5–30 employees) that run on ServiceTitan or pen-and-paper.
+Built for owner-operated field service companies (5–30 employees).
 
 **Live app:** [field-tech-agent.vercel.app](https://field-tech-agent.vercel.app)
 
@@ -14,8 +16,8 @@ Built for owner-operated field service companies (5–30 employees) that run on 
 
 - **Photo analysis** via Claude Vision API — identifies equipment, spots damage, reads labels
 - **Structured output** — risk level, diagnosis, possible causes, parts list with part numbers, billable notes, equipment ID with warranty status
-- **Customer report** — plain-English summary generated automatically, ready to send
-- **Mobile-first PWA** — works from any phone, no install required
+- **Customer report** — plain-English summary ready to send on the spot
+- **Mobile-first PWA** — no install required, runs in the browser on any device
 
 ---
 
@@ -32,11 +34,17 @@ Built for owner-operated field service companies (5–30 employees) that run on 
 
 ## Why I built this
 
-Field service techs spend 20–30 minutes per job writing up notes, pulling part numbers, and drafting customer summaries. This compresses that to under 60 seconds.
+Talking to techs and ops managers, the same complaint kept coming up: documentation 
+takes longer than the job. Writing up notes, looking up part numbers, drafting something 
+coherent for the customer — that's 20-30 minutes per call, every call.
 
-ServiceTitan and competitors store job data — they don't interpret it. FieldTech is the interpretation layer: point a phone at a unit, get a complete job report back before you've put the camera away.
+The platforms they use (ServiceTitan, Jobber, etc.) are good at storing what happened. 
+None of them tell you what to do about it. FieldTech sits on top of whatever they're 
+already running and handles the writeup automatically.
 
-Secondary vertical identified: auto repair shops. Same pain, same workflow, 2–3 hour reskin.
+Started with HVAC, plumbing, and electrical. The same workflow applies to auto repair, 
+medical equipment servicing, industrial maintenance — anywhere a tech is standing in 
+front of a broken thing and needs to document it fast.
 
 ---
 
@@ -61,4 +69,3 @@ npm run dev
 ```
 
 Backend runs on `localhost:3001`, frontend on `localhost:5173`.
-
