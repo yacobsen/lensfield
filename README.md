@@ -47,25 +47,3 @@ medical equipment servicing, industrial maintenance — anywhere a tech is stand
 front of a broken thing and needs to document it fast.
 
 ---
-
-## Running locally
-
-```bash
-# Clone the repo
-git clone https://github.com/yacobsen/field-tech-agent.git
-cd field-tech-agent
-
-# Backend
-cd api
-cp .env.example .env
-# Add your ANTHROPIC_API_KEY to .env
-npm install
-npm run dev
-
-# Frontend (new terminal)
-cd apps/mobile-web
-npm install
-npm run dev
-```
-
-Backend runs on `localhost:3001`, frontend on `localhost:5173`.
