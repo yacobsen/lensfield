@@ -1034,6 +1034,12 @@ body.high-contrast {
   --shadow:    0 1px 3px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.1);
 }
 
+/* The class is applied to <html> as well as <body>, so the viewport canvas
+   goes light too — otherwise the dark html background shows through on scroll. */
+html.high-contrast, body.high-contrast { background: #ffffff; }
+
+body.high-contrast .loading { background: rgba(255, 255, 255, 0.9); }
+
 body.high-contrast .app-header {
   background: rgba(255,255,255,0.96);
   border-bottom-color: rgba(0,0,0,0.15);

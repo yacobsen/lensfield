@@ -63,6 +63,7 @@ const HC_KEY = "fta_high_contrast";
 
 function applyContrast(on) {
   document.body.classList.toggle("high-contrast", on);
+  document.documentElement.classList.toggle("high-contrast", on);
   contrastBtn.setAttribute("aria-pressed", String(on));
 }
 
@@ -675,7 +676,7 @@ function buildShareText(d) {
     jc.asset ? `Asset: ${jc.asset}` : "",
   ].filter(Boolean).join(" | ");
 
-  const lines = [`Field Tech Report — ${ts}`, `Risk: ${d.risk_level} | Category: ${(d.category ?? "").toUpperCase()}`];
+  const lines = [`Lensfield Report — ${ts}`, `Risk: ${d.risk_level} | Category: ${(d.category ?? "").toUpperCase()}`];
   if (jobLine) lines.push(jobLine);
   if (d.meta?.symptom) lines.push(`Symptom: ${d.meta.symptom}`);
   lines.push("", `Summary: ${d.summary}`);
@@ -710,7 +711,7 @@ shareBtn.addEventListener("click", async () => {
   const text = buildShareText(currentData);
   if (navigator.share) {
     try {
-      await navigator.share({ title: `FieldTech Report — ${currentData.risk_level} Risk`, text });
+      await navigator.share({ title: `Lensfield Report — ${currentData.risk_level} Risk`, text });
     } catch (err) {
       if (err.name !== "AbortError") showToast("Share failed");
     }

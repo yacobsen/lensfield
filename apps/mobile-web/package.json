@@ -1,7 +1,7 @@
 {
-  "name": "field-tech-mobile-web",
+  "name": "lensfield-mobile-web",
   "version": "1.0.0",
-  "description": "Field Tech Agent — mobile PWA",
+  "description": "Lensfield — mobile PWA",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

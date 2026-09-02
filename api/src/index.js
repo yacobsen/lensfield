@@ -505,5 +505,5 @@ app.post("/customer-report", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Field Tech API — http://localhost:${PORT} [MODE=${MODE}]`);
+  console.log(`Lensfield API — http://localhost:${PORT} [MODE=${MODE}]`);
 });

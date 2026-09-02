@@ -1,6 +1,6 @@
 {
-  "name": "Field Tech Agent",
-  "short_name": "FieldTech",
+  "name": "Lensfield",
+  "short_name": "Lensfield",
   "description": "AI-powered field technician reporting tool",
   "start_url": "/",
   "display": "standalone",

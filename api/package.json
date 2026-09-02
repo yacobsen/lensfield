@@ -1,7 +1,7 @@
 {
-  "name": "field-tech-api",
+  "name": "lensfield-api",
   "version": "1.0.0",
-  "description": "Field Tech Agent API",
+  "description": "Lensfield API",
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
