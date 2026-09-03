@@ -1,4 +1,4 @@
-# FieldTech AI
+# Lensfield
 
 Mobile AI tool for field service technicians — HVAC, plumbing, electrical, and more.
 
@@ -8,7 +8,7 @@ customer-ready summary. No app install, works on any phone.
 
 Built for owner-operated field service companies (5–30 employees).
 
-**Live app:** [field-tech-agent.vercel.app](https://field-tech-agent.vercel.app)
+**Live app:** [lensfield.vercel.app](https://lensfield.vercel.app)
 
 ---
 
@@ -39,7 +39,7 @@ takes longer than the job. Writing up notes, looking up part numbers, drafting s
 coherent for the customer — that's 20-30 minutes per call, every call.
 
 The platforms they use (ServiceTitan, Jobber, etc.) are good at storing what happened. 
-None of them tell you what to do about it. FieldTech sits on top of whatever they're 
+None of them tell you what to do about it. Lensfield sits on top of whatever they're 
 already running and handles the writeup automatically.
 
 Started with HVAC, plumbing, and electrical. The same workflow applies to auto repair, 
