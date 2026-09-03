@@ -203,7 +203,7 @@ const MOCK_RESPONSES = [
 ];
 
 // ── Claude helpers (REAL mode) ────────────────────────────────
-const CLAUDE_MODEL = "claude-sonnet-4-6";
+const CLAUDE_MODEL = "claude-sonnet-5";
 
 const SYSTEM_PROMPT = `You are a field service AI assistant. Analyze the technician's report and return ONLY valid JSON — no markdown, no code fences, no explanation. Raw JSON only.
 
@@ -341,7 +341,7 @@ async function analyzeWithClaude(note, jobContext, photos, symptom) {
   const callClaude = async (strict) => {
     const msg = await anthropic.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 1800,
+      max_tokens: 1400,
       system: SYSTEM_PROMPT,
       messages: [
         { role: "user", content: buildContent(note, jobContext, photos, symptom, strict) },
