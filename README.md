@@ -1,49 +1,51 @@
 # Lensfield
 
-Mobile AI tool for field service technicians — HVAC, plumbing, electrical, and more.
+Mobile AI for field-service technicians.
 
-Photograph equipment, add a note, get back a structured report: risk level, visual 
-diagnosis, recommended actions, parts list with part numbers, billable notes, and a 
-customer-ready summary. No app install, works on any phone.
+Lensfield turns equipment photos and technician notes into structured service reports — including equipment identification, risk flags, diagnostic context, recommended next steps, parts information, billable notes, and a customer-ready summary.
 
-Built for owner-operated field service companies (5–30 employees).
+It’s built mobile-first for technicians working in HVAC, plumbing, electrical, and other field-service environments.
 
-**Live app:** [lensfield.vercel.app](https://lensfield.vercel.app)
+**Live app:** [lensfield.co](https://lensfield.co)
 
 ---
 
 ## What it does
 
-- **Photo analysis** via Claude Vision API — identifies equipment, spots damage, reads labels
-- **Structured output** — risk level, diagnosis, possible causes, parts list with part numbers, billable notes, equipment ID with warranty status
-- **Customer report** — plain-English summary ready to send on the spot
-- **Mobile-first PWA** — no install required, runs in the browser on any device
+- **Analyze equipment from photos** — identify equipment, read labels, surface visible issues, and pull out useful service context
+- **Generate structured reports** — organize findings into risk level, diagnostic context, possible causes, recommended actions, parts, and billable notes
+- **Create customer-ready summaries** — turn technician findings into clear, plain-English documentation
+- **Work from any phone** — mobile-first PWA with no native app install required
 
 ---
 
-## Stack
+## How it works
 
-| Layer | Tech |
-|---|---|
-| Frontend | Vite PWA — deployed on Vercel |
-| Backend | Node.js / Express — deployed on Railway |
-| AI | Claude Vision API (claude-sonnet) |
-| Version control | GitHub with auto-deploy |
+1. A technician takes a photo of the equipment
+2. They add any notes or job context
+3. Lensfield sends the job to the backend for AI analysis
+4. The result comes back as a structured field-service report
+5. The technician can review the findings and use the customer-facing summary
+
+---
+
+## Architecture
+
+| Layer | Technology |
+| --- | --- |
+| Frontend | Vite PWA deployed on Vercel |
+| Backend | Node.js / Express deployed on Railway |
+| AI | Anthropic Claude |
+| Production frontend | [lensfield.co](https://lensfield.co) |
+| Production API | `api.lensfield.co` |
+| Version control | GitHub with automated deployments |
 
 ---
 
-## Why I built this
+## Why I built it
 
-Talking to techs and ops managers, the same complaint kept coming up: documentation 
-takes longer than the job. Writing up notes, looking up part numbers, drafting something 
-coherent for the customer — that's 20-30 minutes per call, every call.
+Field-service technicians can finish the physical work and still have a lot of documentation left to do. Job notes, equipment details, parts research, internal writeups, and customer summaries all add time after the actual service work is finished.
 
-The platforms they use (ServiceTitan, Jobber, etc.) are good at storing what happened. 
-None of them tell you what to do about it. Lensfield sits on top of whatever they're 
-already running and handles the writeup automatically.
+Most field-service platforms are built to store and manage that information once it exists. Lensfield is focused on the step before that: helping technicians turn what they see and say in the field into useful documentation while they’re still on the job.
 
-Started with HVAC, plumbing, and electrical. The same workflow applies to auto repair, 
-medical equipment servicing, industrial maintenance — anywhere a tech is standing in 
-front of a broken thing and needs to document it fast.
-
----
+The initial focus is HVAC, plumbing, and electrical service, but the same workflow can apply anywhere visual inspection and documentation happen together.
