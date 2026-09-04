@@ -2,9 +2,9 @@
 
 Mobile AI for field-service technicians.
 
-Lensfield turns equipment photos and technician notes into structured service reports; equipment identification, risk flags, diagnostic context, recommended next steps, parts information, billable notes, and a customer-ready summary.
+Lensfield turns equipment photos and technician notes into structured service reports: equipment identification, risk flags, diagnostic context, recommended next steps, parts information, billable notes, and a customer-ready summary.
 
-It’s built mobile-first for technicians working in HVAC, plumbing, electrical, and other field-service environments.
+It’s designed for technicians working in HVAC, plumbing, electrical, and other field-service environments.
 
 **Live app:** [lensfield.co](https://lensfield.co)
 
